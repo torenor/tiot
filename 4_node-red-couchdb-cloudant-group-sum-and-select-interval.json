@@ -1,0 +1,274 @@
+[
+  {
+    "id": "68306ebe.e69bc",
+    "type": "cloudantplus in",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "cloudant": "bfad9871.6b48d8",
+    "database": "elsysdb",
+    "service": "_ext_",
+    "search": "_view_",
+    "design": "demo",
+    "index": "v_demo_sumgroup?group=true&group_level=4",
+    "x": 460,
+    "y": 900,
+    "wires": [
+      [
+        "99f45b25.90d9c8"
+      ]
+    ]
+  },
+  {
+    "id": "78f06fb4.ec4b7",
+    "type": "inject",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 100,
+    "y": 900,
+    "wires": [
+      [
+        "ceb8e428.8a28d8"
+      ]
+    ]
+  },
+  {
+    "id": "51951a0f.cc3f54",
+    "type": "debug",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 830,
+    "y": 820,
+    "wires": []
+  },
+  {
+    "id": "ceb8e428.8a28d8",
+    "type": "function",
+    "z": "94c4d41e.d7bca8",
+    "name": "setInterval",
+    "func": "\n//let d = new Date();\nlet endkey = [2021,12]; //new Date().toJSON(); // in UTC format\n//console.log('Today is: ' + d.toLocaleString());\n//d.setMinutes(d.getMinutes() -240); //use a flow value for interval_in_minutes\n//let startkey = d.toJSON(); // in UTC format\nlet startkey = [2021,2];\nmsg.payload = {view: \"demo\", index: \"v_demo_sumgroup?group=true&group_level=4?descending=true\",startkey: startkey, endkey: endkey, limit:200};\n\n\nreturn msg;\n\n",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 290,
+    "y": 900,
+    "wires": [
+      [
+        "68306ebe.e69bc"
+      ]
+    ]
+  },
+  {
+    "id": "88326f1a.eb152",
+    "type": "change",
+    "z": "94c4d41e.d7bca8",
+    "name": "backup-working-ui_control",
+    "rules": [
+      {
+        "t": "set",
+        "p": "ui_control",
+        "pt": "msg",
+        "to": "{\"tabulator\":{\"columnResized\":\"function(column){     var newColumn = {         field: column._column.field,         visible: column._column.visible,         width: column._column.width,         widthFixed: column._column.widthFixed,         widthStyled: column._column.widthStyled     }; this.send({topic:this.config.topic,ui_control:{callback:'columnResized',columnWidths:newColumn}}); }\",\"columnMoved\":\"function(column, columns){     var newColumns=[];     columns.forEach(function (column) {         newColumns.push({'field': column._column.field});     });     this.send({topic:this.config.topic,ui_control:{callback:'columnMoved',columns:newColumns}}); }\",\"groupHeader\":\"function (value, count, data, group) {return value + \\\"<span style='color:#d00; margin-left:10px;'>(\\\" + count + \\\" Termostat\\\"+((count>1) ? \\\"e\\\" : \\\"\\\") + \\\")</span>\\\";}\",\"columns\":[{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"Y\",\"field\":\"year\",\"headerFilter\":\"input\",\"width\":99,\"frozen\":true},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"M\",\"field\":\"month\",\"headerFilter\":\"input\",\"width\":66,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"D\",\"field\":\"day\",\"headerFilter\":\"input\",\"width\":66,\"bottomCalc\":\"count\",\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\"},\"title\":\"DEV\",\"field\":\"device_id\",\"headerFilter\":\"input\",\"width\":100,\"align\":\"center\"},{\"formatterParams\":{\"target\":\"_blank\",\"min\":0,\"max\":6000,\"color\":[\"cyan\",\"lightgreen\",\"yellow\",\"gold\",\"orange\",\"orangered\",\"red\"],\"legend\":\"function (value) {return '&nbsp;&nbsp;'+value;}\",\"legendColor\":\"#101010\",\"legendAlign\":\"left\"},\"title\":\"Totalsum\",\"formatter\":\"progress\",\"field\":\"value\",\"width\":150,\"bottomCalc\":\"sum\",\"legendalign\":\"center\",\"headerFilter\":\"number\",\"headerFilterPlaceholder\":\"more than...\",\"headerFilterFunc\":\">\"}],\"layout\":\"fitColumns\",\"movableColumns\":true,\"groupBy\":\"\"},\"customHeight\":100}",
+        "tot": "json"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 890,
+    "y": 900,
+    "wires": [
+      [
+        "cfc1db99.696ff8"
+      ]
+    ]
+  },
+  {
+    "id": "187455dd.66702a",
+    "type": "comment",
+    "z": "94c4d41e.d7bca8",
+    "name": "group by and count",
+    "info": "",
+    "x": 130,
+    "y": 860,
+    "wires": []
+  },
+  {
+    "id": "99f45b25.90d9c8",
+    "type": "change",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "payload.$.{\t   'year': key[0],\t   'month': key[1],\t   'day': key[2],\t   'device_id': key[3],\t   'value': value\t   \t     \t}",
+        "tot": "jsonata"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 660,
+    "y": 900,
+    "wires": [
+      [
+        "88326f1a.eb152",
+        "51951a0f.cc3f54",
+        "42ad8792.b8c0a8"
+      ]
+    ]
+  },
+  {
+    "id": "cfc1db99.696ff8",
+    "type": "ui_table",
+    "z": "94c4d41e.d7bca8",
+    "group": "ab824d36.237ad",
+    "name": "tablegroup",
+    "order": 1,
+    "width": "14",
+    "height": "8",
+    "columns": [],
+    "outputs": 0,
+    "cts": false,
+    "x": 1110,
+    "y": 900,
+    "wires": []
+  },
+  {
+    "id": "c0c097ac.0967f8",
+    "type": "http in",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "url": "/int2",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 80,
+    "y": 960,
+    "wires": [
+      [
+        "ceb8e428.8a28d8"
+      ]
+    ]
+  },
+  {
+    "id": "67c9b2b3.aef2fc",
+    "type": "ui_button",
+    "z": "94c4d41e.d7bca8",
+    "name": "",
+    "group": "ab824d36.237ad",
+    "order": 2,
+    "width": "3",
+    "height": "1",
+    "passthru": false,
+    "label": "Get data",
+    "tooltip": "Click her to update the dataset",
+    "color": "red",
+    "bgcolor": "yellow",
+    "icon": "fa fa-history",
+    "payload": "",
+    "payloadType": "date",
+    "topic": "",
+    "topicType": "str",
+    "x": 80,
+    "y": 1040,
+    "wires": [
+      [
+        "5f8a809e.f615b"
+      ]
+    ]
+  },
+  {
+    "id": "5f8a809e.f615b",
+    "type": "change",
+    "z": "94c4d41e.d7bca8",
+    "name": "http://localhost/int",
+    "rules": [
+      {
+        "t": "set",
+        "p": "url",
+        "pt": "msg",
+        "to": "http://localhost/int2",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 270,
+    "y": 1040,
+    "wires": [
+      [
+        "ceb8e428.8a28d8"
+      ]
+    ]
+  },
+  {
+    "id": "42ad8792.b8c0a8",
+    "type": "http response",
+    "z": "94c4d41e.d7bca8",
+    "d": true,
+    "name": "",
+    "statusCode": "",
+    "headers": {},
+    "x": 830,
+    "y": 960,
+    "wires": []
+  },
+  {
+    "id": "bfad9871.6b48d8",
+    "type": "cloudantplus",
+    "host": "<your-host>-bluemix.cloudant.com",
+    "name": "elsysdb"
+  },
+  {
+    "id": "ab824d36.237ad",
+    "type": "ui_group",
+    "name": "Motion pr day",
+    "tab": "c0831e25.7ef5f",
+    "order": 1,
+    "disp": true,
+    "width": "14",
+    "collapse": false
+  },
+  {
+    "id": "c0831e25.7ef5f",
+    "type": "ui_tab",
+    "name": "Tabledata",
+    "icon": "fa-spinner",
+    "order": 5,
+    "disabled": false,
+    "hidden": false
+  }
+]
