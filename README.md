@@ -9,3 +9,7 @@ https://tiot.home.blog/2021/03/15/node-red-couchdb-cloudant-select-data-last-n-m
 
 3_node-red-couchdb-cloudant-jsonata-tabulator
 https://tiot.home.blog/2021/03/19/node-red-couchdb-cloudant-jsonata-tabulator/
+
+4_node-red-couchdb-cloudant-group-sum-and-select-interval
+https://tiot.home.blog/2021/04/09/node-red-couchdb-cloudant-group-sum-and-select-interval/
+
