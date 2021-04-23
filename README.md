@@ -1,5 +1,5 @@
 # tiot
-node-red, couchdb/cloudant, lorawan
+node-red, couchdb/cloudant, lorawan, find description at https://tiot.home.blog/
 
 1_node-red-sorting-metadata-rssi.json
 https://tiot.home.blog/2021/01/07/node-red-jsonata-sort-ttn-metadata-by-rssi/
