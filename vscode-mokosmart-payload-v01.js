@@ -1,0 +1,69 @@
+//let payload = "2F0179512b0077665100d9194d750b33bf00d0006c03a2000e";
+const buffer = Buffer.from("2F0179512b0077665100d9194d750b33bf00d0006c03a2000e", "hex");
+
+let port = 2;  //here you choose the desired or random port
+
+const util = require('util')
+
+console.log("payload data: " + util.inspect(Decode(port, buffer)));
+
+
+function byteToHex(byte) {
+	var unsignedByte = byte & 0xff;
+	if (unsignedByte < 16) {
+	  return '0' + unsignedByte.toString(16);
+	} else {
+	  return unsignedByte.toString(16);
+	}
+  }
+  
+  function Decode(fPort, bytes){
+	  var parse_len = 2; //// start byte of gps
+	  var latitude = bytes[parse_len] + bytes[parse_len+1]*256 + bytes[parse_len+2]*256*256 + bytes[parse_len+3]*256*256*256;
+	  //parse_len = 8;
+	  var longitude = bytes[parse_len+4] + bytes[parse_len+5]*256 + bytes[parse_len+6]*256*256 + bytes[parse_len+7]*256*256*256;
+	  //parse_len += 4;
+		
+		
+		if(latitude>0x80000000)
+			  latitude -= 0x100000000;
+		  if(longitude>0x80000000)
+			  longitude -= 0x100000000;
+		  lat = latitude*90/8388607;
+		  lon = longitude*180/8388607;
+	  
+	  
+	  
+  var data = {  
+	  Battery:
+		bytes[0],
+	  Alarm_status:
+		bytes[1],
+  
+	  Latitude: 
+			lat,	
+	  //bytes[parse_len] + bytes[parse_len+1]*256 + bytes[parse_len+2]*256*256 + bytes[parse_len+3]*256*256*256,
+		// bytes[parse_len] + bytes[parse_len+1]*256 + bytes[parse_len+2]*256*256 + bytes[parse_len+3]*256*256*256;
+	   
+		
+	  Longitude:
+		lon,	
+	  //bytes[parse_len] + bytes[parse_len+1]*256 + bytes[parse_len+2]*256*256 + bytes[parse_len+3]*256*256*256,
+		
+		
+	  btMac:
+		byteToHex(bytes[10])+byteToHex(bytes[11])+byteToHex(bytes[12])+byteToHex(bytes[13])+byteToHex(bytes[14])+byteToHex(bytes[15]),
+		
+	  axis_x:
+		bytes[16]*256 + bytes[17] +" mg",  
+	  axis_y:
+		bytes[18]*256 + bytes[19] +" mg",
+	  axis_z:
+		bytes[20]*256 + bytes[21] +" mg",
+		
+	   angular:
+			angular = bytes[22] + bytes[23], 
+	   };	
+	  
+	  return data;
+  }
