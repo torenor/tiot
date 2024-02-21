@@ -1,4 +1,5 @@
 Links to JSONata tips and samples
+==============================================================================
 https://www.stedi.com/docs/mappings/jsonata/jsonata-cheatsheet
 
 https://blues.io/blog/10-jsonata-examples/
@@ -10,3 +11,6 @@ GitHub - jsonata-js/jsonata-exerciser: Playground for trying out JSONata express
 https://github.com/jsonata-js/jsonata/blob/master/tutorial.md
 
 https://blues.com/blog/10-jsonata-examples/
+
+how to "join" objects based on a common key:
+https://github.com/jsonata-js/jsonata/issues/333
