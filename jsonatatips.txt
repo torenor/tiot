@@ -14,3 +14,8 @@ https://blues.com/blog/10-jsonata-examples/
 
 how to "join" objects based on a common key:
 https://github.com/jsonata-js/jsonata/issues/333
+example: https://try.jsonata.org/fL7qgr2Iw
+
+Samples
+==============================================================================
+
