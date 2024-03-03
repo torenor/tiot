@@ -19,6 +19,10 @@ how to "join" objects based on a common key:
 https://github.com/jsonata-js/jsonata/issues/333
 example: https://try.jsonata.org/fL7qgr2Iw
 
+Many nice examples
+https://support.ultimate.ai/hc/en-us/articles/12110696153874-JSONata-Enablement
+
+
 Samples
 ==============================================================================
 
