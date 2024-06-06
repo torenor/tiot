@@ -1,13 +1,5 @@
 [
     {
-        "id": "4699164e9c288158",
-        "type": "tab",
-        "label": "regex",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "91c977ef317079ac",
         "type": "inject",
         "z": "4699164e9c288158",
@@ -101,9 +93,9 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "abcd xx bb ff:xx abcd",
+        "payload": "abcd",
         "payloadType": "str",
-        "x": 120,
+        "x": 70,
         "y": 180,
         "wires": [
             [
@@ -237,7 +229,7 @@
         "type": "function",
         "z": "4699164e9c288158",
         "name": "regex-pattern",
-        "func": "var data = msg.payload\nvar pattern = /IP xOffered: [0-9.]+/;\nvar res = data.match(pattern);\n\nif (!Error) {\n    msg.payload = false \n} else { msg.payload = true}\n//msg.payload = res;\nreturn msg;",
+        "func": "var data = msg.payload\nvar pattern = /IP Offered: [0-9.]+/;\nvar res = data.match(pattern);\n\nif (!Error) {\n    msg.payload = false \n} else { msg.payload = true}\n//msg.payload = res;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
