@@ -34,3 +34,4 @@ quadrantChart
     Campaign F: [0.35, 0.78]
 
 ```
+Se article here: https://tiot.home.blog/2024/06/21/node-red-mermaid-markdown-quadrantchart/
