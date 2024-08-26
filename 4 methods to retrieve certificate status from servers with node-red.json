@@ -1,0 +1,614 @@
+[
+    {
+        "id": "50cbca8ed7517554",
+        "type": "group",
+        "z": "d8d3fb1c2e1e349d",
+        "name": "cert grabber",
+        "style": {
+            "fill": "#ffdf7f",
+            "label": true
+        },
+        "nodes": [
+            "dd032f207383a627",
+            "f9e2aff0450f02ce",
+            "dda7a5be780bd772"
+        ],
+        "x": 54,
+        "y": 219,
+        "w": 672,
+        "h": 162
+    },
+    {
+        "id": "dd032f207383a627",
+        "type": "debug",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "50cbca8ed7517554",
+        "name": "Certificate info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "f9e2aff0450f02ce",
+        "type": "certificate-grabber",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "50cbca8ed7517554",
+        "name": "",
+        "host": "payload.host",
+        "hostType": "msg",
+        "port": "payload.port",
+        "portType": "msg",
+        "timeout": "10",
+        "x": 390,
+        "y": 260,
+        "wires": [
+            [
+                "dd032f207383a627"
+            ]
+        ]
+    },
+    {
+        "id": "dda7a5be780bd772",
+        "type": "inject",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "50cbca8ed7517554",
+        "name": "Inject host & port",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"host\":\"yahoo.com\",\"port\":443}",
+        "payloadType": "json",
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "f9e2aff0450f02ce"
+            ]
+        ]
+    },
+    {
+        "id": "a72834e75d4eca57",
+        "type": "group",
+        "z": "d8d3fb1c2e1e349d",
+        "name": "ssl-parser",
+        "style": {
+            "fill": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "e11f4d4e4447877b",
+            "fb0b80d93deb5e0a",
+            "d9e0d85513ab9bae",
+            "0da3ac0e5a71849f",
+            "06479d9ef2c13076",
+            "d6606d46d4251337",
+            "bc7d9ba2e7fb8b3d",
+            "18962e9147de05de",
+            "f9eb285a082a5732"
+        ],
+        "x": 54,
+        "y": 419,
+        "w": 992,
+        "h": 242
+    },
+    {
+        "id": "e11f4d4e4447877b",
+        "type": "debug",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "debug 446",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "fb0b80d93deb5e0a",
+        "type": "ssl-parser",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "ssl-parser",
+        "domain_field": "payload",
+        "x": 540,
+        "y": 580,
+        "wires": [
+            [
+                "d9e0d85513ab9bae"
+            ]
+        ]
+    },
+    {
+        "id": "d9e0d85513ab9bae",
+        "type": "change",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.{   \"issuer\": issuer.C & \" \" & issuer.O,   \"subject\": subject.C & \" \" & subject.O & \" \" & subject.CN,   \"subjectAlternativeName\": subjectAlternativeName,   \"daysRemaining\": daysRemaining,   \"status\": status }",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 580,
+        "wires": [
+            [
+                "18962e9147de05de",
+                "bc7d9ba2e7fb8b3d"
+            ]
+        ]
+    },
+    {
+        "id": "0da3ac0e5a71849f",
+        "type": "split",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 190,
+        "y": 560,
+        "wires": [
+            [
+                "d6606d46d4251337"
+            ]
+        ]
+    },
+    {
+        "id": "06479d9ef2c13076",
+        "type": "inject",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "Array of IP-hosts",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[\"yahoo.com\",\"google.com\",\"facebook.com\"]",
+        "payloadType": "json",
+        "x": 180,
+        "y": 460,
+        "wires": [
+            [
+                "0da3ac0e5a71849f"
+            ]
+        ]
+    },
+    {
+        "id": "d6606d46d4251337",
+        "type": "delay",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "fb0b80d93deb5e0a"
+            ]
+        ]
+    },
+    {
+        "id": "bc7d9ba2e7fb8b3d",
+        "type": "debug",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "debug 447",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "18962e9147de05de",
+        "type": "join",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "15",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 750,
+        "y": 520,
+        "wires": [
+            [
+                "e11f4d4e4447877b",
+                "f9eb285a082a5732"
+            ]
+        ]
+    },
+    {
+        "id": "f9eb285a082a5732",
+        "type": "ui-table",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "a72834e75d4eca57",
+        "group": "f3f9354c48708b97",
+        "name": "",
+        "label": "text",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "selectionType": "none",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "x": 930,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f3f9354c48708b97",
+        "type": "ui-group",
+        "name": "Incident",
+        "page": "8003cd9035732ff0",
+        "width": "16",
+        "height": "1",
+        "order": -1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "8003cd9035732ff0",
+        "type": "ui-page",
+        "name": "Mon",
+        "ui": "cb79bc4520925e32",
+        "path": "/mon",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "a9e7675d8b6d26e5",
+        "order": -1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "cb79bc4520925e32",
+        "type": "ui-base",
+        "name": "My UI",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false
+    },
+    {
+        "id": "a9e7675d8b6d26e5",
+        "type": "ui-theme",
+        "name": "Green Theme",
+        "colors": {
+            "surface": "#4c5200",
+            "primary": "#00803e",
+            "bgPage": "#d3eedc",
+            "groupBg": "#ffffff",
+            "groupOutline": "#a5cfcb"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "1f6198cb70660b32",
+        "type": "group",
+        "z": "d8d3fb1c2e1e349d",
+        "name": "tlc-cert-info",
+        "style": {
+            "fill": "#d1d1d1",
+            "label": true
+        },
+        "nodes": [
+            "d9458ee26e50ecd5",
+            "3023f57f560d34c4",
+            "50d9be476b07daeb",
+            "5590eabc990e75f9",
+            "a2090b54dbf45c3e",
+            "22f6d42603cf75ed",
+            "481470c97bd45b0d"
+        ],
+        "x": 54,
+        "y": 739,
+        "w": 912,
+        "h": 142
+    },
+    {
+        "id": "d9458ee26e50ecd5",
+        "type": "inject",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "Start",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 840,
+        "wires": [
+            [
+                "50d9be476b07daeb"
+            ]
+        ]
+    },
+    {
+        "id": "3023f57f560d34c4",
+        "type": "debug",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "Output SSL-CERT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "50d9be476b07daeb",
+        "type": "change",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "host",
+                "pt": "msg",
+                "to": "mail.yahoo.com",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 840,
+        "wires": [
+            [
+                "481470c97bd45b0d"
+            ]
+        ]
+    },
+    {
+        "id": "5590eabc990e75f9",
+        "type": "comment",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "Set Params",
+        "info": "",
+        "x": 370,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "a2090b54dbf45c3e",
+        "type": "comment",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "Get Certificate",
+        "info": "",
+        "x": 590,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "22f6d42603cf75ed",
+        "type": "comment",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "Output Result",
+        "info": "",
+        "x": 810,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "481470c97bd45b0d",
+        "type": "tls-cert-info",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "1f6198cb70660b32",
+        "name": "",
+        "x": 590,
+        "y": 840,
+        "wires": [
+            [
+                "3023f57f560d34c4"
+            ]
+        ]
+    },
+    {
+        "id": "ca9020f34c588b09",
+        "type": "group",
+        "z": "d8d3fb1c2e1e349d",
+        "name": "openssl cli",
+        "style": {
+            "fill": "#c8e7a7",
+            "label": true
+        },
+        "nodes": [
+            "08fd78f85e3a7422",
+            "9c7de6e06cd60a23",
+            "48d2dc73822773df"
+        ],
+        "x": 54,
+        "y": 71.5,
+        "w": 772,
+        "h": 97
+    },
+    {
+        "id": "08fd78f85e3a7422",
+        "type": "debug",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "ca9020f34c588b09",
+        "name": "debug 448",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "9c7de6e06cd60a23",
+        "type": "exec",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "ca9020f34c588b09",
+        "command": "openssl s_client -servername  yahoo.com -connect yahoo.com:443 </dev/null 2>/dev/null | openssl x509 -noout -enddate | sed 's/notAfter=//' | xargs -0 date +\"%Y-%m-%d\" -u -d | tr -d '\\n' 2025-01-18                                                                              ",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "openssl",
+        "x": 380,
+        "y": 120,
+        "wires": [
+            [
+                "08fd78f85e3a7422"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "48d2dc73822773df",
+        "type": "inject",
+        "z": "d8d3fb1c2e1e349d",
+        "g": "ca9020f34c588b09",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "9c7de6e06cd60a23"
+            ]
+        ]
+    }
+]
