@@ -1,0 +1,103 @@
+[
+    {
+        "id": "7f372dd4.9ac984",
+        "type": "file in",
+        "z": "e133a16d32d6c8ca",
+        "name": "get file",
+        "filename": "c:\\temp\\html\\test.html",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 290,
+        "y": 100,
+        "wires": [
+            [
+                "892f85fd.ddf898"
+            ]
+        ]
+    },
+    {
+        "id": "892f85fd.ddf898",
+        "type": "function",
+        "z": "e133a16d32d6c8ca",
+        "name": "write email",
+        "func": "var file = msg.filename;    // create local file variable for convenient reference\nvar d = new Date();     // create current date object for the time string\nvar tstring = d.toString().substring(0,4) + d.toString().substring(15,21);\n\nmsg.attachments =\n     { filename : file.substring(file.lastIndexOf('/')+1,file.length),\n        content : msg.payload };    // content should be a file binary buffer\n        \nmsg.topic = \"Your Daily Report for \" + tstring; // email subject\n\nmsg.payload = \"See attached text file: `\" + msg.attachments.filename + \"`\"; // email body\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 100,
+        "wires": [
+            [
+                "3d2eae0.1c8b452",
+                "e56d7627.05dcc8"
+            ]
+        ]
+    },
+    {
+        "id": "e56d7627.05dcc8",
+        "type": "e-mail",
+        "z": "e133a16d32d6c8ca",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "recipient@mail.com",
+        "dname": "",
+        "x": 650,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5fb69172.b3471",
+        "type": "inject",
+        "z": "e133a16d32d6c8ca",
+        "name": "6:00PM",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "7f372dd4.9ac984"
+            ]
+        ]
+    },
+    {
+        "id": "3d2eae0.1c8b452",
+        "type": "debug",
+        "z": "e133a16d32d6c8ca",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 630,
+        "y": 60,
+        "wires": []
+    }
+]
