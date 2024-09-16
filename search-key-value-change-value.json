@@ -1,0 +1,123 @@
+[
+    {
+        "id": "453d93622b35de8b",
+        "type": "inject",
+        "z": "c9ac548d3bfcb021",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "2e9d021c274aebd8"
+            ]
+        ]
+    },
+    {
+        "id": "2e9d021c274aebd8",
+        "type": "file in",
+        "z": "c9ac548d3bfcb021",
+        "name": "",
+        "filename": "c:\\mon\\config\\hosts2.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 300,
+        "y": 40,
+        "wires": [
+            [
+                "7b83e1dd53404ac0"
+            ]
+        ]
+    },
+    {
+        "id": "a6c7138ae55118ca",
+        "type": "function",
+        "z": "c9ac548d3bfcb021",
+        "name": "search-object-change-value",
+        "func": "let servers = msg.payload;\nlet updatedServers = [];\n\nfor (let i = 0; i < servers.length; i++) {\n  if (servers[i].name === \"server7\") {\n    servers[i].active = false;\n  }\n  updatedServers.push(servers[i]);\n}\n\n// Send the updated message\nnode.send({ payload: updatedServers });\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 60,
+        "wires": [
+            [
+                "8f285bdc1b0b60e9",
+                "518b2b5c4d1041e8"
+            ]
+        ]
+    },
+    {
+        "id": "8f285bdc1b0b60e9",
+        "type": "debug",
+        "z": "c9ac548d3bfcb021",
+        "name": "debug 502",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "7b83e1dd53404ac0",
+        "type": "json",
+        "z": "c9ac548d3bfcb021",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 490,
+        "y": 120,
+        "wires": [
+            [
+                "a6c7138ae55118ca"
+            ]
+        ]
+    },
+    {
+        "id": "518b2b5c4d1041e8",
+        "type": "file",
+        "z": "c9ac548d3bfcb021",
+        "name": "",
+        "filename": "c:\\mon\\config\\hosts2.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 820,
+        "y": 180,
+        "wires": [
+            [
+                "8f285bdc1b0b60e9"
+            ]
+        ]
+    }
+]
